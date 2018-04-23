@@ -1,5 +1,5 @@
 #define ulli unsigned long long int
-#define ld unsigned long long int
+#define ld long double
 
 #include <iostream>
 #include <math.h>
@@ -28,7 +28,7 @@ void execute_task();
 void task();
 
 void calculate_primes_to_boundary();
-bool is_prime(ulli number);
+bool is_prime(ld number);
 
 void find_max_palindrome();
 ulli create_palindrome(ulli number, ulli digits);
@@ -44,23 +44,23 @@ void print_result();
 
 int main(int argc, const char * argv[]) {
     execute_task();
-    
+
     return 0;
 }
 
 void execute_task() {
     clock_t tStart = clock();
-    
+
     task();
-    
+
     print_result();
-    
+
     printf("Time taken: %.3f sec.\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
 }
 
 void task() {
     calculate_primes_to_boundary();
-    
+
     find_max_palindrome();
 }
 
@@ -97,8 +97,8 @@ bool is_prime(ld number) {
 void find_max_palindrome() {
     ulli max_digits = calculate_number_of_digits(max_primes_boundary * max_primes_boundary);
     ulli min_digits = calculate_number_of_digits(max_primes_boundary * min_primes_boundary);
-    
-    
+
+
     for (ulli digits = max_digits; digits >= min_digits; digits--) {
         find_max_palindrome_in_range_of_digits(digits);
     }
@@ -107,20 +107,20 @@ void find_max_palindrome() {
 void find_max_palindrome_in_range_of_digits(ulli digits) {
     ulli palindrome = 0;
     ulli divisor = 0;
-    
+
     for (ulli i = max_primes_boundary; i > min_primes_boundary; i--) {
         palindrome = create_palindrome(i, digits);
-        
+
         if (is_not_palindrome(palindrome))
             continue;
-        
+
         divisor = divisible_by(palindrome);
-        
+
         if (divisor > min_primes_boundary && max_palindrome < palindrome) {
             max_palindrome = palindrome;
             first_prime_multiplier = divisor;
             second_prime_multiplier = max_palindrome / divisor;
-            
+
             return;
         }
     }
@@ -131,30 +131,30 @@ ulli create_palindrome(ulli number, ulli required_digits) {
     ulli reversed = 0;
     ulli powers = 0;
     ulli digit = 0;
-    
+
     while (number != 0) {
         digit = fmod(number, 10);
         number /= 10;
         reversed = reversed * 10 + digit;
-        
+
         powers++;
     }
-    
+
     if (required_digits % 2 != 0)
         result = (result / 10) * 10;
-    
+
     return (result * pow(10, required_digits - powers)) + reversed;
 }
 
 ulli calculate_number_of_digits(ulli number) {
     ulli digits = 0;
-    
+
     while (number != 0) {
         number /= 10;
-        
+
         digits++;
     }
-    
+
     return digits;
 }
 
@@ -163,7 +163,7 @@ ulli divisible_by(ld number) {
         if (fmod(number, (ld)primes[i]) == 0)
             return primes[i];
     }
-    
+
     return NULL;
 }
 

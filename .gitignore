@@ -2,4 +2,4 @@
 .DS_Store
 
 # Ignore some xcode system files
-.xcodeproj/
+palindromes_research.xcodeproj/

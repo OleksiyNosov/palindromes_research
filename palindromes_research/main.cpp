@@ -19,6 +19,9 @@ ulli max_palindrome = 0;
 int min_primes_boundary = 10000;
 int max_primes_boundary = 99999;
 
+int min_primes_boundary_p2 = min_primes_boundary * min_primes_boundary;
+int max_primes_boundary_p2 = max_primes_boundary * max_primes_boundary;
+
 // Variables for temporary calculations
 int last_prime_index = 1;
 int last_palindrome_index = 0;
@@ -118,9 +121,8 @@ bool is_in_primes_boundaries(ulli number) {
 }
 
 void find_max_palindrome() {
-    ulli max_digits = calculate_number_of_digits(max_primes_boundary * max_primes_boundary);
-    ulli min_digits = calculate_number_of_digits(min_primes_boundary * min_primes_boundary);
-
+    ulli max_digits = calculate_number_of_digits(max_primes_boundary_p2);
+    ulli min_digits = calculate_number_of_digits(min_primes_boundary_p2);
 
     for (ulli digits = max_digits; digits >= min_digits; digits--) {
         find_max_palindrome_in_range_of_digits(digits);
@@ -132,10 +134,13 @@ void find_max_palindrome_in_range_of_digits(ulli digits) {
     ulli divisor = 0;
     ulli second_divisor = 0;
 
-    for (ulli i = max_primes_boundary; i > min_primes_boundary; i--) {
+    ulli local_max_primes_boundary = max_primes_boundary * 2;
+
+    for (ulli i = local_max_primes_boundary; i >= min_primes_boundary; i--) {
+
         palindrome = create_palindrome(i, digits);
 
-        if (is_not_palindrome(palindrome))
+        if (palindrome == 0 || is_not_palindrome(palindrome))
             continue;
 
         divisor = divisible_by(palindrome);
@@ -157,6 +162,9 @@ void find_max_palindrome_in_range_of_digits(ulli digits) {
 }
 
 ulli create_palindrome(ulli number, ulli required_digits) {
+    if (calculate_number_of_digits(number) > ((required_digits + 1) / 2))
+        return NULL;
+
     ulli result = number;
     ulli reversed = 0;
     ulli powers = 0;

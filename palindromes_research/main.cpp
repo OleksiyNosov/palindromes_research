@@ -4,7 +4,7 @@
 #include <iostream>
 #include <math.h>
 
-int array_size = 100000;
+int array_size = 10000000;
 
 ulli * primes = new ulli[array_size];
 ulli * primes_squares = new ulli[array_size];
@@ -28,7 +28,8 @@ void execute_task();
 void task();
 
 void calculate_primes_to_boundary();
-bool is_prime(ld number);
+bool check_if_is_prime(ulli boundary_number);
+bool is_in_primes(ld number);
 
 void find_max_palindrome();
 ulli create_palindrome(ulli number, ulli digits);
@@ -71,18 +72,32 @@ void calculate_primes_to_boundary() {
     primes[0] = (ulli)2;
     primes[1] = (ulli)3;
 
-    for (ld number = 5; number <= max_primes_boundary; number += 2) {
-        if (is_prime(number)) {
-            last_prime_index++;
-            primes[last_prime_index] = number;
-            primes_squares[last_prime_index] = number * number;
-        }
-    }
+    check_if_is_prime(max_primes_boundary);
 
     return;
 }
 
-bool is_prime(ld number) {
+bool check_if_is_prime(ulli boundary_number) {
+    if (primes[last_prime_index] == boundary_number) {
+        return true;
+    } else if (primes[last_prime_index] > boundary_number) {
+        return is_in_primes(boundary_number);
+    } else {
+        for (ld number = primes[last_prime_index] + 2; number <= boundary_number; number += 2) {
+            if (is_in_primes(number)) {
+                last_prime_index++;
+                primes[last_prime_index] = number;
+                primes_squares[last_prime_index] = number * number;
+
+                if (primes[last_prime_index] == boundary_number)
+                    return true;
+            }
+        }
+        return false;
+    }
+}
+
+bool is_in_primes(ld number) {
     for (int i = 0; i < last_prime_index; i++) {
         if (number < primes_squares[i])
             return true;
@@ -116,7 +131,7 @@ void find_max_palindrome_in_range_of_digits(ulli digits) {
 
         divisor = divisible_by(palindrome);
 
-        if (divisor > min_primes_boundary && max_palindrome < palindrome) {
+        if (divisor > min_primes_boundary && max_palindrome < palindrome && check_if_is_prime(divisor) && check_if_is_prime(palindrome / divisor)) {
             max_palindrome = palindrome;
             first_prime_multiplier = divisor;
             second_prime_multiplier = max_palindrome / divisor;

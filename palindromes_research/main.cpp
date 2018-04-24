@@ -111,7 +111,7 @@ bool is_in_primes(ld number) {
 
 void find_max_palindrome() {
     ulli max_digits = calculate_number_of_digits(max_primes_boundary * max_primes_boundary);
-    ulli min_digits = calculate_number_of_digits(max_primes_boundary * min_primes_boundary);
+    ulli min_digits = calculate_number_of_digits(min_primes_boundary * min_primes_boundary);
 
 
     for (ulli digits = max_digits; digits >= min_digits; digits--) {
@@ -122,6 +122,7 @@ void find_max_palindrome() {
 void find_max_palindrome_in_range_of_digits(ulli digits) {
     ulli palindrome = 0;
     ulli divisor = 0;
+    ulli second_divisor = 0;
 
     for (ulli i = max_primes_boundary; i > min_primes_boundary; i--) {
         palindrome = create_palindrome(i, digits);
@@ -131,12 +132,16 @@ void find_max_palindrome_in_range_of_digits(ulli digits) {
 
         divisor = divisible_by(palindrome);
 
-        if (divisor > min_primes_boundary && max_palindrome < palindrome && check_if_is_prime(divisor) && check_if_is_prime(palindrome / divisor)) {
-            max_palindrome = palindrome;
-            first_prime_multiplier = divisor;
-            second_prime_multiplier = max_palindrome / divisor;
+        if (divisor > min_primes_boundary && max_palindrome < palindrome) {
+            second_divisor = palindrome / divisor;
 
-            return;
+            if (check_if_is_prime(divisor) && check_if_is_prime(second_divisor)) {
+                max_palindrome = palindrome;
+                first_prime_multiplier = divisor;
+                second_prime_multiplier = second_divisor;
+
+                return;
+            }
         }
     }
 }

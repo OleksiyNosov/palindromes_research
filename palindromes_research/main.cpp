@@ -42,6 +42,7 @@ bool is_palindrome(ulli number);
 bool is_not_palindrome(ulli number);
 
 void print_result();
+void release_memory();
 
 int main(int argc, const char * argv[]) {
     execute_task();
@@ -57,6 +58,8 @@ void execute_task() {
     print_result();
 
     printf("Time taken: %.3f sec.\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
+
+    release_memory();
 }
 
 void task() {
@@ -211,4 +214,10 @@ void print_result() {
     printf("Palindrome: %llu\n", max_palindrome);
 
     return;
+}
+
+void release_memory() {
+    delete [] primes;
+    delete [] primes_squares;
+    delete [] palindromes;
 }

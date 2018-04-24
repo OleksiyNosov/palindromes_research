@@ -40,6 +40,7 @@ bool is_divisible_by_small_primes(ld number);
 
 bool is_palindrome(ulli number);
 bool is_not_palindrome(ulli number);
+bool is_in_primes_boundaries(ulli number);
 
 void print_result();
 void release_memory();
@@ -112,6 +113,10 @@ bool is_in_primes(ld number) {
     return true;
 }
 
+bool is_in_primes_boundaries(ulli number) {
+    return (number >= min_primes_boundary && number <= max_primes_boundary);
+}
+
 void find_max_palindrome() {
     ulli max_digits = calculate_number_of_digits(max_primes_boundary * max_primes_boundary);
     ulli min_digits = calculate_number_of_digits(min_primes_boundary * min_primes_boundary);
@@ -139,11 +144,13 @@ void find_max_palindrome_in_range_of_digits(ulli digits) {
             second_divisor = palindrome / divisor;
 
             if (check_if_is_prime(divisor) && check_if_is_prime(second_divisor)) {
-                max_palindrome = palindrome;
-                first_prime_multiplier = divisor;
-                second_prime_multiplier = second_divisor;
+                if (is_in_primes_boundaries(divisor) && is_in_primes_boundaries(second_divisor)) {
+                    max_palindrome = palindrome;
+                    first_prime_multiplier = divisor;
+                    second_prime_multiplier = second_divisor;
 
-                return;
+                    return;
+                }
             }
         }
     }

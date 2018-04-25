@@ -14,12 +14,15 @@ ulli first_prime_multiplier = 0;
 ulli second_prime_multiplier = 0;
 ulli max_palindrome = 0;
 
+ulli create_max_boundary(ulli digits);
+ulli create_min_boundary(ulli digits);
+
 // Numbers of digits in number that can be tweaked
 int required_digits_number = 5;
 
 // Computational boundaries
-int min_primes_boundary = pow(10, required_digits_number - 1);
-int max_primes_boundary = min_primes_boundary * 10 - 1;
+ulli min_primes_boundary = create_min_boundary(required_digits_number);
+ulli max_primes_boundary = create_max_boundary(required_digits_number);
 
 // Variables for temporary calculations
 int last_prime_index = 1;
@@ -72,11 +75,11 @@ void task() {
 }
 
 void calculate_primes_to_boundary() {
-    primes_squares[0] = (ulli)4;
-    primes_squares[1] = (ulli)9;
-
     primes[0] = (ulli)2;
     primes[1] = (ulli)3;
+
+    primes_squares[0] = (ulli)4;
+    primes_squares[1] = (ulli)9;
 
     check_if_is_prime(max_primes_boundary);
 
@@ -123,7 +126,6 @@ void find_max_palindrome() {
     ulli max_digits = calculate_number_of_digits(max_primes_boundary * max_primes_boundary);
     ulli min_digits = calculate_number_of_digits(min_primes_boundary * min_primes_boundary);
 
-
     for (ulli digits = max_digits; digits >= min_digits; digits--) {
         find_max_palindrome_in_range_of_digits(digits);
     }
@@ -134,22 +136,21 @@ void find_max_palindrome_in_range_of_digits(ulli digits) {
     ulli divisor = 0;
     ulli second_divisor = 0;
 
-    for (ulli i = max_primes_boundary; i > min_primes_boundary; i--) {
+    ulli local_min_boundary = create_min_boundary((digits) / 2);
+    ulli local_max_boundary = create_max_boundary((digits + 1) / 2);
+
+    for (ulli i = local_max_boundary; i >= local_min_boundary; i--) {
         palindrome = create_palindrome(i, digits);
 
         divisor = divisible_by(palindrome);
 
-        if (divisor > min_primes_boundary && max_palindrome < palindrome) {
-            second_divisor = palindrome / divisor;
-
+        if (is_in_primes_boundaries(divisor) && is_in_primes_boundaries(second_divisor = palindrome / divisor)) {
             if (check_if_is_prime(divisor) && check_if_is_prime(second_divisor)) {
-                if (is_in_primes_boundaries(divisor) && is_in_primes_boundaries(second_divisor)) {
-                    max_palindrome = palindrome;
-                    first_prime_multiplier = divisor;
-                    second_prime_multiplier = second_divisor;
+                max_palindrome = palindrome;
+                first_prime_multiplier = divisor;
+                second_prime_multiplier = second_divisor;
 
-                    return;
-                }
+                return;
             }
         }
     }
@@ -187,8 +188,19 @@ ulli calculate_number_of_digits(ulli number) {
     return digits;
 }
 
+ulli create_max_boundary(ulli digits) {
+    return pow(10, digits) - 1;
+}
+
+ulli create_min_boundary(ulli digits) {
+    return create_max_boundary(digits - 1) + 1;
+}
+
 ulli divisible_by(ld number) {
     for (int i = 0; i < last_prime_index; i++) {
+        if (number < primes_squares[i])
+            return NULL;
+
         if (fmod(number, (ld)primes[i]) == 0)
             return primes[i];
     }

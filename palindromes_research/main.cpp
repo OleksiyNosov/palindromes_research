@@ -8,7 +8,6 @@ int array_size = 10000000;
 
 ulli * primes = new ulli[array_size];
 ulli * primes_squares = new ulli[array_size];
-ulli * palindromes = new ulli[array_size];
 
 // Variables that will be returned
 ulli first_prime_multiplier = 0;
@@ -138,9 +137,6 @@ void find_max_palindrome_in_range_of_digits(ulli digits) {
     for (ulli i = max_primes_boundary; i > min_primes_boundary; i--) {
         palindrome = create_palindrome(i, digits);
 
-        if (is_not_palindrome(palindrome))
-            continue;
-
         divisor = divisible_by(palindrome);
 
         if (divisor > min_primes_boundary && max_palindrome < palindrome) {
@@ -229,5 +225,4 @@ void print_result() {
 void release_memory() {
     delete [] primes;
     delete [] primes_squares;
-    delete [] palindromes;
 }

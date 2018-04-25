@@ -26,7 +26,6 @@ ulli max_primes_boundary = create_max_boundary(required_digits_number);
 
 // Variables for temporary calculations
 int last_prime_index = 1;
-int last_palindrome_index = 0;
 
 // Main functions
 void execute_task();
@@ -126,7 +125,7 @@ void find_max_palindrome() {
     ulli max_digits = calculate_number_of_digits(max_primes_boundary * max_primes_boundary);
     ulli min_digits = calculate_number_of_digits(min_primes_boundary * min_primes_boundary);
 
-    for (ulli digits = max_digits; digits >= min_digits; digits--) {
+    for (ulli digits = max_digits; digits >= min_digits && max_palindrome <= 1; digits--) {
         find_max_palindrome_in_range_of_digits(digits);
     }
 }
@@ -198,9 +197,6 @@ ulli create_min_boundary(ulli digits) {
 
 ulli divisible_by(ld number) {
     for (int i = 0; i < last_prime_index; i++) {
-        if (number < primes_squares[i])
-            return NULL;
-
         if (fmod(number, (ld)primes[i]) == 0)
             return primes[i];
     }

@@ -196,10 +196,9 @@ ulli create_min_boundary(ulli digits) {
 }
 
 ulli divisible_by(ld number) {
-    for (int i = 0; i < last_prime_index; i++) {
+    for (int i = 0; i < last_prime_index && primes[i] <= number; i++)
         if (fmod(number, (ld)primes[i]) == 0)
             return primes[i];
-    }
 
     return NULL;
 }

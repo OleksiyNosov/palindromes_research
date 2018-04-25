@@ -15,9 +15,12 @@ ulli first_prime_multiplier = 0;
 ulli second_prime_multiplier = 0;
 ulli max_palindrome = 0;
 
-// Variables for task that can be tweaked
-int min_primes_boundary = 10000;
-int max_primes_boundary = 99999;
+// Numbers of digits in number that can be tweaked
+int required_digits_number = 5;
+
+// Computational boundaries
+int min_primes_boundary = pow(10, required_digits_number - 1);
+int max_primes_boundary = min_primes_boundary * 10 - 1;
 
 // Variables for temporary calculations
 int last_prime_index = 1;
